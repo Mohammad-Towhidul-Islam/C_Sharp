@@ -1,10 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+using System;
+namespace Problem3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+            Console.WriteLine("Enter 1st Angle: ");
+            int angle1 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter 2nd Angle: ");
+            int angle2 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter 3rd Angle: ");
+            int angle3 = Convert.ToInt32(Console.ReadLine());
 
-</Project>
+            int sum = angle1 + angle2 + angle3;
+            if (sum == 180)
+            {
+                Console.WriteLine("A Triangle Can Be Formed");
+            }
+            else
+            {
+                Console.WriteLine("A Triangle Can Not Be Formed");
+            }
+            Console.ReadLine();
+
+        }
+    }
+}
