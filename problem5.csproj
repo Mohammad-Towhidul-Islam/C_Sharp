@@ -1,10 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-</Project>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+ 
+namespace Problem5
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int num;
+ 
+ 
+            Console.WriteLine("Enter number to print table: ");
+            num = Convert.ToInt32(Console.ReadLine());
+ 
+            for (int i = 1; i <= 10; i++)
+            {
+ 
+                Console.WriteLine("{0} X {1} = {2} \n", num, i, num * i);
+            }
+            Console.ReadLine();
+ 
+        }
+    }
+}
+ 
