@@ -1,10 +1,51 @@
-<Project Sdk="Microsoft.NET.Sdk">
+using System;
+namespace problem1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string notes;
+            int score;
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
 
-</Project>
+
+            Console.Write("Input the score :");
+            score = Convert.ToInt32(Console.ReadLine());
+
+            switch (score / 10)
+            {
+
+                case 10:
+                case 9:
+                    notes = "Grade: A+";
+                    break;
+
+                case 8:
+                    notes = "Grade: A";
+                    break;
+
+                case 7:
+                    notes = "Grade: B";
+                    break;
+
+                case 6:
+                    notes = "Grade: C";
+                    break;
+
+                case 5:
+                    notes = "Grade: D";
+                    break;
+
+                default:
+                    notes = "Grade: F";
+                    break;
+
+            }
+
+            Console.Write("You have chosen  : {0}\n", notes);
+
+            Console.ReadLine();
+        }
+    }
+}
