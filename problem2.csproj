@@ -1,10 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+namespace problem2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double price, Quantity, tax,PriceWithoutTax,Totalprice;
+            Console.WriteLine("Enter Price:");
+            price = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter Quantity:");
+            Quantity = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Tax:");
+            tax = Convert.ToDouble(Console.ReadLine());
+            PriceWithoutTax = price * Quantity;
+            tax = (PriceWithoutTax * tax) / 100;
+            Totalprice = PriceWithoutTax + tax;
+            Console.WriteLine("Total Price including tax=" + Totalprice);
+            Console.ReadLine();
 
-</Project>
+        }
+    }
+}
