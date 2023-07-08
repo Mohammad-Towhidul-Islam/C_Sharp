@@ -1,0 +1,153 @@
+A sports club of your local area decided to have a software application to manage its members.You are a member of that club. When the club management committee came to know that you are a very good C# developer, they approached to you to develop the software. The requirement is kind of following.
+Member class has id, name and an address and a public static method called GetAllDetails which will show all the information for a particular Member (Player/Staff). There are 2 types of special member. i) Player and i) Staff. Staff class has additional field named position which can hold the position (e.g. coach, manager, physician) and a method called PlayerStatus which will return
+Players who are eligible to play next match.Player class has additional salary, playing position (e.g. striker, mid-fielder) currentRank (value will be 0-100%) and boolean type field playingStatus (which can be either true or false) based on player performance which is going to select the player eligible to play next match. When the rank of a player lies between (75-100) he will be eligible to play next maich.
+Staffs need help from your system using Player Status method where staff will give the informatig of individual player and from there if system finds that rank of a player is between (75-100), it suggest he will be eligible to play the next match. After that it will show all the informatio suggested Player and also information of Staff at the end.
+The Club Committee maintains all types of members. The ClubCommittee class has an array Member type. The AddMember(Member mem) method of this class adds a member to that a Member can be a player or staff. The Main method is given for you. Your job is to implement  classes along with the relationships.
+
+................................Solve...............
+using System;
+using System.Collections.Generic;
+
+class Member
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Address { get; set; }
+
+    public virtual void GetAllDetails()
+    {
+        Console.WriteLine($"Member Details:\nID: {Id}\nName: {Name}\nAddress: {Address}");
+    }
+}
+
+class Staff : Member
+{
+    public string Position { get; set; }
+
+    public override void GetAllDetails()
+    {
+        base.GetAllDetails();
+        Console.WriteLine($"Position: {Position}");
+    }
+}
+
+class Player : Member
+{
+    public decimal Salary { get; set; }
+    public string PlayingPosition { get; set; }
+    public int CurrentRank { get; set; }
+    public bool PlayingStatus { get; set; }
+
+    public override void GetAllDetails()
+    {
+        base.GetAllDetails();
+        Console.WriteLine($"Salary: {Salary}\nPlaying Position: {PlayingPosition}\nCurrent Rank: {CurrentRank}%");
+    }
+
+    public bool IsEligibleForNextMatch()
+    {
+        return CurrentRank >= 75 && CurrentRank <= 100;
+    }
+}
+
+class ClubCommittee
+{
+    private List<Member> members;
+
+    public ClubCommittee()
+    {
+        members = new List<Member>();
+    }
+
+    public void AddMember(Member member)
+    {
+        members.Add(member);
+    }
+
+    public void DisplayAllDetails()
+    {
+        foreach (var member in members)
+        {
+            member.GetAllDetails();
+
+            if (member is Player player && player.IsEligibleForNextMatch())
+            {
+                Console.WriteLine($"{player.Name} is eligible to play the next match.\n");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        ClubCommittee clubCommittee = new ClubCommittee();
+
+        Player player1 = new Player()
+        {
+            Id = 1,
+            Name = "John",
+            Address = "123 Main Street",
+            Salary = 5000,
+            PlayingPosition = "Striker",
+            CurrentRank = 80,
+            PlayingStatus = true
+        };
+
+        Player player2 = new Player()
+        {
+            Id = 2,
+            Name = "Sarah",
+            Address = "456 Elm Street",
+            Salary = 4500,
+            PlayingPosition = "Mid-fielder",
+            CurrentRank = 70,
+            PlayingStatus = true
+        };
+
+        Staff staff1 = new Staff()
+        {
+            Id = 3,
+            Name = "David",
+            Address = "789 Oak Street",
+            Position = "Coach"
+        };
+
+        clubCommittee.AddMember(player1);
+        clubCommittee.AddMember(player2);
+        clubCommittee.AddMember(staff1);
+
+        clubCommittee.DisplayAllDetails();
+    }
+}
+
+
+..........................Output.........................
+
+Member Details:
+ID: 1
+Name: John
+Address: 123 Main Street
+Salary: 5000
+Playing Position: Striker
+Current Rank: 80%
+John is eligible to play the next match.
+
+Member Details:
+ID: 2
+Name: Sarah
+Address: 456 Elm Street
+Salary: 4500
+Playing Position: Mid-fielder
+Current Rank: 70%
+
+Member Details:
+ID: 3
+Name: David
+Address: 789 Oak Street
+Position: Coach
