@@ -1,0 +1,127 @@
+Interface: 
+BasicBankingInterface which has these below abstract methods 
+ bool deposit(int amount)
+ bool withdraw(int amount)
+Consider a bank has three different types of accounts. An account holder 
+(Person/Student) can have any one of these below type. 
+1. Current 
+2. Savings 
+3. Overdraft 
+These three types of account has different advantages and disadvantages 
+ Current Account 
+o Current account holders can withdraw all of his/her amount 
+ Saving Account 
+o Saving account holders can withdraw maximum 80% of his/her 
+total amount 
+ Overdraft account 
+o Overdraft account holders can withdraw additional amount 
+which is set by at account creation time (overdraft limit amount) 
+After implement this structure change the account type (ex: current to saving or 
+else) and changes will automatically reflected as well. 
+You have to develop this scenario on your own
+
+..............SOLVE.......................
+using System;
+public interface BasicBankingInterface
+{
+    bool Deposit(int amount);
+    bool Withdraw(int amount);
+    int Balance { get; } // Add Balance property to the interface
+}
+
+public class CurrentAccount : BasicBankingInterface
+{
+    private int balance;
+
+    public bool Deposit(int amount)
+    {
+        balance += amount;
+        return true;
+    }
+
+    public bool Withdraw(int amount)
+    {
+        balance -= amount;
+        return true;
+    }
+
+    public int Balance => balance; // Implement the Balance property
+}
+
+public class SavingsAccount : BasicBankingInterface
+{
+    private int balance;
+
+    public bool Deposit(int amount)
+    {
+        balance += amount;
+        return true;
+    }
+
+    public bool Withdraw(int amount)
+    {
+        if (amount <= balance * 0.8)
+        {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public int Balance => balance; // Implement the Balance property
+}
+
+public class OverdraftAccount : BasicBankingInterface
+{
+    private int balance;
+    private int overdraftLimit;
+
+    public OverdraftAccount(int overdraftLimit)
+    {
+        this.overdraftLimit = overdraftLimit;
+    }
+
+    public bool Deposit(int amount)
+    {
+        balance += amount;
+        return true;
+    }
+
+    public bool Withdraw(int amount)
+    {
+        if (amount <= balance + overdraftLimit)
+        {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public int Balance => balance; // Implement the Balance property
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        // Create a Current Account
+        BasicBankingInterface currentAccount = new CurrentAccount();
+        currentAccount.Deposit(1000);
+        currentAccount.Withdraw(500);
+        Console.WriteLine("Current Account Balance: " + currentAccount.Balance);
+
+        // Create a Savings Account
+        BasicBankingInterface savingsAccount = new SavingsAccount();
+        savingsAccount.Deposit(2000);
+        bool withdrawalResult = savingsAccount.Withdraw(1800);
+        Console.WriteLine("Savings Account Balance: " + savingsAccount.Balance);
+        Console.WriteLine("Withdrawal Successful? " + withdrawalResult);
+
+        // Create an Overdraft Account
+        BasicBankingInterface overdraftAccount = new OverdraftAccount(500);
+        overdraftAccount.Deposit(3000);
+        withdrawalResult = overdraftAccount.Withdraw(3500);
+        Console.WriteLine("Overdraft Account Balance: " + overdraftAccount.Balance);
+        Console.WriteLine("Withdrawal Successful? " + withdrawalResult);
+    }
+}
