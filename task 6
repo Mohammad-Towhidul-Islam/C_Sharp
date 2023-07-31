@@ -1,0 +1,166 @@
+Interface: 
+BasicBankingInterface which has these below abstract methods 
+ bool deposit(int amount)
+ bool withdraw(int amount)
+Consider a bank has three different types of accounts. An account holder 
+(Person/Student) can have any one of these below type. 
+1. Current 
+2. Savings 
+3. Overdraft 
+These three types of account has different advantages and disadvantages 
+ Current Account 
+o Current account holders can withdraw all of his/her amount 
+ Saving Account 
+o Saving account holders can withdraw maximum 80% of his/her 
+total amount 
+ Overdraft account 
+o Overdraft account holders can withdraw additional amount 
+which is set by at account creation time (overdraft limit amount) 
+After implement this structure change the account type (ex: current to saving or 
+else) and changes will automatically reflected as well. 
+You have to develop this scenario on your own
+
+
+
+using System;
+
+public interface BasicBankingInterface
+{
+    bool Deposit(int amount);
+    bool Withdraw(int amount);
+}
+
+public class CurrentAccount : BasicBankingInterface
+{
+    private int balance;
+
+    public CurrentAccount(int initialBalance)
+    {
+        balance = initialBalance;
+    }
+
+    public bool Deposit(int amount)
+    {
+        if (amount > 0)
+        {
+            balance += amount;
+            return true;
+        }
+        return false;
+    }
+
+    public bool Withdraw(int amount)
+    {
+        if (amount > 0)
+        {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public int GetBalance()
+    {
+        return balance;
+    }
+}
+
+public class SavingsAccount : BasicBankingInterface
+{
+    private int balance;
+
+    public SavingsAccount(int initialBalance)
+    {
+        balance = initialBalance;
+    }
+
+    public bool Deposit(int amount)
+    {
+        if (amount > 0)
+        {
+            balance += amount;
+            return true;
+        }
+        return false;
+    }
+
+    public bool Withdraw(int amount)
+    {
+        if (amount > 0 && amount <= balance * 0.8) // 80% withdrawal limit for savings account
+        {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public int GetBalance()
+    {
+        return balance;
+    }
+}
+
+public class OverdraftAccount : BasicBankingInterface
+{
+    private int balance;
+    private int overdraftLimit;
+
+    public OverdraftAccount(int initialBalance, int overdraftLimit)
+    {
+        balance = initialBalance;
+        this.overdraftLimit = overdraftLimit;
+    }
+
+    public bool Deposit(int amount)
+    {
+        if (amount > 0)
+        {
+            balance += amount;
+            return true;
+        }
+        return false;
+    }
+
+    public bool Withdraw(int amount)
+    {
+        int totalAmount = balance + overdraftLimit;
+        if (amount > 0 && amount <= totalAmount)
+        {
+            balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public int GetBalance()
+    {
+        return balance;
+    }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Create a Current Account with an initial balance of 5000
+        BasicBankingInterface account = new CurrentAccount(5000);
+
+        // Deposit 2000 into the account
+        account.Deposit(2000);
+        Console.WriteLine("Current Account Balance: " + ((CurrentAccount)account).GetBalance());
+
+        // Change the account type to Savings
+        account = new SavingsAccount(((CurrentAccount)account).GetBalance());
+
+        // Withdraw 1000 from the Savings account (80% of the balance)
+        account.Withdraw(1000);
+        Console.WriteLine("Savings Account Balance: " + ((SavingsAccount)account).GetBalance());
+
+        // Change the account type to Overdraft
+        account = new OverdraftAccount(((SavingsAccount)account).GetBalance(), 3000);
+
+        // Withdraw 6000 from the Overdraft account (exceeds the balance but within the overdraft limit)
+        account.Withdraw(6000);
+        Console.WriteLine("Overdraft Account Balance: " + ((OverdraftAccount)account).GetBalance());
+    }
+}
