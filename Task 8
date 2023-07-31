@@ -1,0 +1,215 @@
+Interface: 
+RadioPlayerInterface which has these below abstract methods 
+ void switch(boolean on); 
+ void retune(double frequency); 
+ void setVolume(int loudness); 
+ void changeChannel();
+
+MusicPlayerInterface which has these below abstract methods 
+ void switch(boolean on); 
+ void play(boolean on); 
+ void setVolume(int loudness); 
+ void playNext(); 
+ void playPrevious(); 
+
+Develop necessary class to implement these two interfaces and test from main 
+method. 
+Hints: Ipod or Phone class. It have set of Music files (Array). A phone can have max 
+500 musics. 
+Hints: MusicFile can be another class that have to be implemented on Ipod or phone 
+class. 
+
+Class MusicFile
+
+String title; 
+String artist; 
+int yearOfRelease; 
+int durationInSeconds;
+
+declare private
+
+Constructors(empty, parameterized) 
+void changeTitle(string title)
+
+declare public 
+
+Special Note: Do not code interface and class on same file. Use separate files for 
+interfaces. The interface should be public.
+
+
+................SOLVE....................
+
+using System;
+
+interface RadioPlayerInterface
+{
+    void Switch(bool on);
+    void Retune(double frequency);
+    void SetVolume(int loudness);
+    void ChangeChannel();
+}
+
+interface MusicPlayerInterface
+{
+    void Switch(bool on);
+    void Play(bool on);
+    void SetVolume(int loudness);
+    void PlayNext();
+    void PlayPrevious();
+}
+
+class MusicFile
+{
+    private string title;
+    private string artist;
+    private int yearOfRelease;
+    private int durationInSeconds;
+    
+    public string Title { get;  set; }
+    public string Artist { get;  set; }
+    public int YearOfRelease { get;  set; }
+    public int DurationInSeconds { get;  set; }
+
+    public MusicFile(string title, string artist, int yearOfRelease, int durationInSeconds)
+    {
+        Title = title;
+        Artist = artist;
+        YearOfRelease = yearOfRelease;
+        DurationInSeconds = durationInSeconds;
+    }
+   
+    
+
+    public void ChangeTitle(string title)
+    {
+        Title = title;
+    }
+}
+
+class Ipod : RadioPlayerInterface, MusicPlayerInterface
+{
+    private bool isRadioOn;
+    private double currentFrequency;
+    private int volume;
+    private MusicFile[] musicFiles;
+    private int currentMusicIndex;
+
+    public Ipod()
+    {
+        isRadioOn = false;
+        currentFrequency = 0.0;
+        volume = 50;
+        musicFiles = new MusicFile[500]; // Maximum of 500 songs in the music player
+        currentMusicIndex = 0;
+    }
+
+    // RadioPlayerInterface implementation
+    void RadioPlayerInterface.Switch(bool on) // Explicit interface implementation
+    {
+        isRadioOn = on;
+        Console.WriteLine($"Radio is turned {(on ? "on" : "off")}");
+    }
+
+    public void Retune(double frequency)
+    {
+        if (isRadioOn)
+        {
+            currentFrequency = frequency;
+            Console.WriteLine($"Radio tuned to frequency: {frequency} MHz");
+        }
+        else
+        {
+            Console.WriteLine("Please turn on the radio to retune.");
+        }
+    }
+
+    void RadioPlayerInterface.SetVolume(int loudness) // Explicit interface implementation
+    {
+        volume = loudness;
+        Console.WriteLine($"Radio volume set to: {loudness}");
+    }
+
+    public void ChangeChannel()
+    {
+        // Implement channel changing logic here
+        Console.WriteLine("Changing radio channel.");
+    }
+
+    // MusicPlayerInterface implementation
+    void MusicPlayerInterface.Switch(bool on) // Explicit interface implementation
+    {
+        // This implementation assumes the device has a dedicated power switch for the music player.
+        // If the power switch is shared with the radio, then some coordination is needed between the two interfaces.
+        Console.WriteLine($"Music player is turned {(on ? "on" : "off")}");
+    }
+
+    public void Play(bool on)
+    {
+        // Implement music playback logic here
+        Console.WriteLine($"Music is {(on ? "playing" : "paused")}");
+    }
+
+    public void SetVolume(int loudness)
+    {
+        volume = loudness;
+        Console.WriteLine($"Music player volume set to: {loudness}");
+    }
+
+    public void PlayNext()
+    {
+        currentMusicIndex++;
+        if (currentMusicIndex >= musicFiles.Length)
+        {
+            currentMusicIndex = 0; // Loop back to the first music file
+        }
+        // Implement logic to play the next music file
+        Console.WriteLine($"Playing next music: {musicFiles[currentMusicIndex].Title}");
+    }
+
+    public void PlayPrevious()
+    {
+        currentMusicIndex--;
+        if (currentMusicIndex < 0)
+        {
+            currentMusicIndex = musicFiles.Length - 1; // Loop back to the last music file
+        }
+        // Implement logic to play the previous music file
+        Console.WriteLine($"Playing previous music: {musicFiles[currentMusicIndex].Title}");
+    }
+
+    public void AddMusic(MusicFile musicFile)
+    {
+        // Implement logic to add a music file to the music player's collection
+        // For simplicity, we'll add the music file to the next available slot in the array.
+        musicFiles[currentMusicIndex++] = musicFile;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Ipod ipod = new Ipod();
+
+        // Testing the radio player interface
+        ((RadioPlayerInterface)ipod).Switch(true);
+        ipod.Retune(95.5);
+        ((RadioPlayerInterface)ipod).SetVolume(70);
+        ipod.ChangeChannel();
+
+        // Testing the music player interface
+        ((MusicPlayerInterface)ipod).Switch(true);
+        ipod.Play(true);
+        ipod.SetVolume(80);
+
+        // Adding some music files to the music player
+        MusicFile music1 = new MusicFile("Song 1", "Artist 1", 2020, 180);
+        MusicFile music2 = new MusicFile("Song 2", "Artist 2", 2018, 220);
+        ipod.AddMusic(music1);
+        ipod.AddMusic(music2);
+
+        ipod.PlayNext();
+        ipod.PlayNext();
+        ipod.PlayPrevious();
+    }
+}
